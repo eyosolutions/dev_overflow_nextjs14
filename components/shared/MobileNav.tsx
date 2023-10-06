@@ -55,10 +55,10 @@ const MobileNav = () => {
           className="invert-colors sm:hidden"
         />
       </SheetTrigger>
-      <SheetContent side="left" className="background-light900_dark200 overflow-auto border-none">
+      <SheetContent side="left" className="background-light900_dark200 custom-scrollbar overflow-y-auto border-none">
         <Link href="/" className="flex items-center gap-1">
           <Image src="/assets/images/site-logo.svg" width={23} height={23} alt='DevOverflow' />
-          <p className="h2-bold text-dark100_light900 font-spaceGrotesk">Dev <span className="text-primary-500">Overflow</span></p>
+          <p className="h2-bold text-dark100_light900 font-spaceGrotesk">Dev<span className="text-primary-500">Overflow</span></p>
         </Link>
         <div>
           <SheetClose asChild>
@@ -75,7 +75,7 @@ const MobileNav = () => {
               </SheetClose>
               <SheetClose asChild>
                 <Link href="/sign-up">
-                  <Button className="small-medium light-border-2 btn-tertiary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
+                  <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
                     Sign Up
                   </Button>
                 </Link>
