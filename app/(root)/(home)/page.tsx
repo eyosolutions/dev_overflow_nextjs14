@@ -11,7 +11,7 @@ import { getQuestions } from "@/lib/actions/question.action";
 // import QuestionCard from "@/components/home/QuestionCard";
 
 const Home = async () => {
-  const result = await getQuestions({});
+  const { questions } = await getQuestions({});
   // console.log(result.questions);
 
   return (
@@ -41,8 +41,8 @@ const Home = async () => {
         <HomeFilters />
       </div>
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length > 0 ?
-          result.questions.map((question) => (
+        {questions.length > 0 ?
+          questions.map((question) => (
           <QuestionCard
             key={question._id}
             _id={question._id}
