@@ -7,63 +7,13 @@ import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
+import { getQuestions } from "@/lib/actions/question.action";
 // import QuestionCard from "@/components/home/QuestionCard";
 
-const questions = [
-  {
-    _id: "1",
-    title: "How to write a TypeScript interface?",
-    tags: [
-      { _id: "1", name: "typescript" },
-      { _id: "2", name: "programming" },
-    ],
-    author: {
-      _id: "1",
-      name: "Sujata | JS Mastery",
-      picture: "alice.jpg",
-    },
-    upvotes: 1500000000,
-    views: 2000000,
-    answers: [],
-    createdAt: new Date("2023-01-15"),
-  },
-  {
-    _id: "2",
-    title: "What are the benefits of using TypeScript?",
-    tags: [
-      { _id: "3", name: "typescript" },
-      { _id: "4", name: "javascript" },
-    ],
-    author: {
-      _id: "2",
-      name: "Bob Johnson",
-      picture: "bob.jpg",
-    },
-    upvotes: 20,
-    views: 2500,
-    answers: [],
-    createdAt: new Date("2023-02-20"),
-  },
-  {
-    _id: "3",
-    title: "How to use TypeScript with React?",
-    tags: [
-      { _id: "5", name: "typescript" },
-      { _id: "6", name: "react" },
-    ],
-    author: {
-      _id: "3",
-      name: "Eve Brown",
-      picture: "eve.jpg",
-    },
-    upvotes: 12,
-    views: 180,
-    answers: [],
-    createdAt: new Date("2023-10-10"),
-  },
-];
+const Home = async () => {
+  const result = await getQuestions({});
+  // console.log(result.questions);
 
-const Home = () => {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -91,8 +41,8 @@ const Home = () => {
         <HomeFilters />
       </div>
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ?
-          questions.map((question) => (
+        {result.questions.length > 0 ?
+          result.questions.map((question) => (
           <QuestionCard
             key={question._id}
             _id={question._id}
