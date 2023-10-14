@@ -157,7 +157,7 @@ const Question = ({ mongoUserId }: Props) => {
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Introduce the problem and expand on what you put in the title. Minimum 20 characters.
+                Introduce the problem and expand on what you put in the title. Minimum 100 characters.
               </FormDescription>
               <FormMessage className="text-red-500" />
             </FormItem>

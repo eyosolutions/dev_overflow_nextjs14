@@ -14,6 +14,7 @@ export default authMiddleware({
   ignoredRoutes: [
     '/api/webhook',
     '/api/chatgpt',
+    // '/ask-question',
   ]
 });
  

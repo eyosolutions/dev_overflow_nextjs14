@@ -3,7 +3,7 @@
 import Link from "next/link";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
-import { formatNumberWithPostfix, getTimestamp, truncateString } from "@/lib/utils";
+import { formatNumberWithPostfix, getTimestamp } from "@/lib/utils";
 
 interface QuestionProps {
   _id: string;
@@ -60,9 +60,9 @@ const QuestionCard = ({
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <div>
           <Metric
-            imgUrl="/assets/icons/avatar.svg"
+            imgUrl={author.picture}
             alt="User"
-            value={truncateString(author.name)}
+            value={author.name}
             title={` - asked ${getTimestamp(createdAt)}`}
             href={`/profile/${author._id}`}
             isAuthor

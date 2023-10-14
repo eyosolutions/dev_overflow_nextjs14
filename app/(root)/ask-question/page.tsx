@@ -5,10 +5,11 @@ import { redirect } from "next/navigation";
 
 const AskQuestion = async () => {
   const { userId } = auth();
-  
+  // console.log('auth-Id: ', userId);
   if (!userId) redirect('/sign-in');
-  const mongoUser = await getUserById({ userId });
 
+  const mongoUser = await getUserById({ userId });
+  // console.log('AskQuestion: ', mongoUser);
   return (
     <div>
       <h1 className="h1-bold text-dark100_light900">
