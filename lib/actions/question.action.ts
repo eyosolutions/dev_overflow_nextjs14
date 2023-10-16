@@ -42,7 +42,7 @@ export async function createQuestion(params: CreateQuestionParams) {
     for (const tag of tags) {
       const existingTags = await Tag.findOneAndUpdate(
         { name: { $regex: new RegExp(`^${tag}$`, "i") } }, // find tag by name
-        { $setOnInsert: { name: tag }, $push: { question: question._id} },
+        { $setOnInsert: { name: tag }, $push: { questions: question._id, followers: author } },
         { upsert: true, new: true }
       );
       tagDocuments.push(existingTags._id);

@@ -2,9 +2,10 @@
 
 import User from "@/database/user.model";
 import { connectToDatabase } from "../mongoose";
-import { CreateUserParams, DeleteUserParams, GetUserByIdParams, UpdateUserParams } from "./shared.types";
+import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetUserByIdParams, UpdateUserParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
+// import Tag from "@/database/tag.model";
 // import { redirect } from "next/navigation";
 
 
@@ -92,6 +93,24 @@ export async function getUserById(params: GetUserByIdParams) {
     if(!user) return;
     // console.log('mongoUser: ', user);
     return user;
+
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// Get all users - done by me
+export async function getAllUsers(params: GetAllUsersParams) {
+  try {
+    connectToDatabase();
+
+    // const { page = 1, pageSize = 20, filter, searchQuery } = params;
+
+    const users = await User.find({})
+      .sort({ createdAt: -1 })
+
+    return { users };
 
   } catch (error) {
     console.log(error);
