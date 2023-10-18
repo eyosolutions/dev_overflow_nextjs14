@@ -65,3 +65,37 @@ export const truncateString = (inputString: string): string => {
   const truncatedString = inputString.slice(0, maxLength - 3) + '...';
   return truncatedString;
 };
+
+// convert date string
+export function formatDateString(inputDateString: string): string {
+  // Parse the input date string
+  const parsedDate = new Date(inputDateString);
+
+  // Check if the parsing was successful
+  if (isNaN(parsedDate.getTime())) {
+    return "Invalid Date";
+  }
+
+  // Format the date in the desired format
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  const month = monthNames[parsedDate.getMonth()];
+  const day = parsedDate.getDate();
+  const year = parsedDate.getFullYear();
+  const hours = parsedDate.getHours();
+  const minutes = parsedDate.getMinutes();
+
+  // Determine whether it's AM or PM
+  const amOrPm = hours >= 12 ? "PM" : "AM";
+
+  // Convert hours to 12-hour format
+  const formattedHours = hours % 12 || 12;
+
+  // Format the date string
+  const formattedDateString = `${month} ${day}, ${year}, ${formattedHours}:${minutes} ${amOrPm}`;
+
+  return formattedDateString;
+}

@@ -2,11 +2,9 @@
 
 import User from "@/database/user.model";
 import { connectToDatabase } from "../mongoose";
-import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetUserByIdParams, UpdateUserParams } from "./shared.types";
+import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetUserByIdParams, ToggleSaveQuestionParams, UpdateUserParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
-// import Tag from "@/database/tag.model";
-// import { redirect } from "next/navigation";
 
 
 // Create User
@@ -79,13 +77,13 @@ export async function deleteUser(params: DeleteUserParams) {
 };
 
 
-// Get User by Id
+// Get User by clerkId
 export async function getUserById(params: GetUserByIdParams) {
   try {
     connectToDatabase();
 
     const { userId } = params;
-    // console.log('clerkId: ', userId);
+    
     const user = await User.findOne({ clerkId: userId });
 
     // my injected code to resolve error page when 
@@ -116,4 +114,29 @@ export async function getAllUsers(params: GetAllUsersParams) {
     console.log(error);
     throw error;
   }
+};
+
+
+export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
+  try {
+    connectToDatabase();
+    const { userId, questionId, path } = params;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const isQuestionSaved = user.saved.includes(questionId);
+
+    if (isQuestionSaved) {
+      await User.findByIdAndUpdate(userId, { $pull: { saved: questionId }}, { new: true });
+    } else {
+      await User.findByIdAndUpdate(userId, { $addToSet: { saved: questionId }}, { new: true });
+    }
+    revalidatePath(path);
+
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } 
 };

@@ -133,13 +133,13 @@ export interface UpdateUserParams {
   updateData: Partial<IUser>;
   path: string;
 }
-
+// for adding or removing saved question by user for detail question page
 export interface ToggleSaveQuestionParams {
   userId: string;
   questionId: string;
   path: string;
 }
-
+// for collection page
 export interface GetSavedQuestionsParams {
   clerkId: string;
   page?: number;

@@ -1,7 +1,9 @@
 
 const SavedQuestionsPage = () => {
   return (
-    <div>Saved Questions Page</div>
+    <div>
+      <p className="h2-semibold text-dark400_light700">Saved Questions Page - Still under construction</p>
+    </div>
   );
 };
 
