@@ -5,8 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const getTimestamp = (createdAt: Date): string => {
+export const getTimestamp = (createdAt: Date | string): string => {
   const currentDate = new Date();
+  // added code
+  if (typeof createdAt === 'string') {
+    createdAt = new Date(createdAt);
+  }
   const timeDifference = currentDate.getTime() - createdAt.getTime();
   
   // Define time units in milliseconds
@@ -96,6 +100,40 @@ export function formatDateString(inputDateString: string): string {
 
   // Format the date string
   const formattedDateString = `${month} ${day}, ${year}, ${formattedHours}:${minutes} ${amOrPm}`;
+
+  return formattedDateString;
+}
+
+// convert date string
+export function formatToMonthAndYear(inputDateString: string): string {
+  // Parse the input date string
+  const parsedDate = new Date(inputDateString);
+
+  // Check if the parsing was successful
+  if (isNaN(parsedDate.getTime())) {
+    return "Invalid Date";
+  }
+
+  // Format the date in the desired format
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const month = monthNames[parsedDate.getMonth()];
+  // const day = parsedDate.getDate();
+  const year = parsedDate.getFullYear();
+  // const hours = parsedDate.getHours();
+  // const minutes = parsedDate.getMinutes();
+
+  // // Determine whether it's AM or PM
+  // const amOrPm = hours >= 12 ? "PM" : "AM";
+
+  // // Convert hours to 12-hour format
+  // const formattedHours = hours % 12 || 12;
+
+  // Format the date string
+  const formattedDateString = `${month} ${year}`;
 
   return formattedDateString;
 }

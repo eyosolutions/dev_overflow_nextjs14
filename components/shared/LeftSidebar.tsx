@@ -1,40 +1,52 @@
 "use client"
-import { SignedOut } from '@clerk/nextjs';
+import { SignedOut, useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import React from 'react';
 import { Button } from '../ui/button';
 import { sidebarLinks } from '@/constants';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { GetUserByIdParams } from '@/lib/actions/shared.types';
-// import Image from "next/image";
-// import Link from "next/link";
 
-
-const LeftSidebar = ({ userId }: GetUserByIdParams) => {
+const LeftSidebar = () => {
   const pathname = usePathname();
-
+  const { userId } = useAuth();
   return (
     <section className="background-light900_dark200 light-border custom-scrollbar sticky left-0 top-0 flex h-screen w-fit flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
       <div className="flex flex-1 flex-col gap-6">
-        {sidebarLinks.map((item) => {
-          const isActive = (pathname.includes(item.route) && item.route.length > 1 || pathname === item.route);
-          return (
-            // modified href with own code to have a condition
-            <Link key={item.route} href={`${item.route === '/profile' ? `/profile/${userId}` : item.route}`} className={`${isActive 
-              ? 'primary-gradient rounded-lg text-light-900'
-              : 'text-dark300_light900'} flex items-center justify-start gap-4 bg-transparent p-4`}>
-              <Image
-                src={item.imgURL}
-                alt={item.label}
-                width={20}
-                height={20}
-                className={`${!isActive && 'invert-colors'} max-sm:hidden`}
-              />
-              <p className={`${isActive ? 'base-bold' : 'base-medium'} max-lg:hidden`}>{item.label}</p>
-            </Link>
-          )
-        })}
+        {sidebarLinks
+          .map((item: any) => {
+            if (item.route === '/profile') {
+              if (userId) {
+                item.route = `${item.route}/${userId}`;
+                return item;
+              }
+              return null;
+            }
+            return item;
+          })
+          .filter((item) => item)
+          .map((item) => {
+            const isActive =
+              (pathname.includes(item.route) && item.route.length > 1) || pathname === item.route;
+            return (
+              <Link
+                key={item.route}
+                href={item.route}
+                className={`${isActive
+                  ? 'primary-gradient rounded-lg text-light-900'
+                  : 'text-dark300_light900'} flex items-center justify-start gap-4 bg-transparent p-4`}
+              >
+                <Image
+                  src={item.imgURL}
+                  alt={item.label}
+                  width={20}
+                  height={20}
+                  className={`${!isActive && 'invert-colors'} max-sm:hidden`}
+                />
+                <p className={`${isActive ? 'base-bold' : 'base-medium'} max-lg:hidden`}>{item.label}</p>
+              </Link>
+            );
+          })}
       </div>
       <SignedOut>
         <div className="flex flex-col gap-3">

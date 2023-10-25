@@ -11,18 +11,24 @@ import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/lib/actions/user.action";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
+// import { viewQuestion } from "@/lib/actions/interaction.action";
 
 const DetailQuestionPage = async ({ params }: ParamsProps) => {
+
   const { userId: clerkId } = auth();
 
   const { question } = await getQuestionById({ questionId: params.id });
 
-  let mongoUser;
+  let mongoUser: any;
 
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
   }
 
+  // await viewQuestion({
+  //   userId: mongoUser._id ? mongoUser._id : undefined,
+  //   questionId: question._id
+  // });
 
   return (
     <section>
@@ -59,7 +65,7 @@ const DetailQuestionPage = async ({ params }: ParamsProps) => {
         </h2>
       </div>
 
-      {/* Metrics */}
+      {/* Metrics for Questions */}
       <div className="mb-8 mt-5 flex flex-wrap gap-4">
         <Metric
           imgUrl="/assets/icons/clock.svg"
@@ -83,6 +89,7 @@ const DetailQuestionPage = async ({ params }: ParamsProps) => {
           textStyles="small-medium text-dark400_light800"
         />
       </div>
+
       {/* displaying content of question */}
       <ParseHTML data={question.content} />
 
@@ -102,12 +109,14 @@ const DetailQuestionPage = async ({ params }: ParamsProps) => {
         )}
       </div>
 
+      {/* Server component that renders Votes component as well */}
       <AllAnswers
         questionId={question._id}
         authorId={mongoUser._id}
         totalAnswers={question.answers.length}
       />
 
+      {/* Client component causes rendering of page */}
       <AnswerForm
         question={question.content}
         questionId={JSON.stringify(question._id)}

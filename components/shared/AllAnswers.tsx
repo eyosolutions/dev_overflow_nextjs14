@@ -55,7 +55,6 @@ const AllAnswers = async ({ questionId, authorId, totalAnswers, page, filter }: 
                 type="answer"
                 typeId={JSON.stringify(answer._id)}
                 authorId={JSON.stringify(authorId)}
-                // authorId={authorId}
                 upvotes={answer.upvotes.length}
                 hasUpvoted={answer.upvotes.includes(authorId)}
                 downvotes={answer.downvotes.length}

@@ -11,7 +11,7 @@ interface TagCardProps {
 
 const TagCard = ({ tag }: TagCardProps) => {
   return (
-    <Link href={`/tag/${tag._id}`} className="shadow-light100_darknone">
+    <Link href={`/tags/${tag._id}`} className="shadow-light100_darknone">
     <article className="background-light900_dark200 light-border flex w-full flex-col gap-4 rounded-2xl border px-8 py-10 sm:w-[260px]">
       <div className="background-light800_dark400 w-fit rounded-sm px-5 py-1.5">
         <p className="paragraph-semibold text-dark300_light900 line-clamp-1 capitalize">{tag.name}</p>
