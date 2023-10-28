@@ -2,11 +2,14 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { getQuestionsByTagId } from "@/lib/actions/tag.action";
-import { ParamsProps } from "@/types";
+import { URLProps } from "@/types";
 
-const TagDetailPage = async ({ params }: ParamsProps) => {
+const TagDetailPage = async ({ params, searchParams }: URLProps) => {
 
-  const result = await getQuestionsByTagId({ tagId: params.id });
+  const result = await getQuestionsByTagId({
+    tagId: params.id,
+    searchQuery: searchParams.q
+  });
 
   // console.log('Tag: ', result.questions.length);
   return (
@@ -14,10 +17,10 @@ const TagDetailPage = async ({ params }: ParamsProps) => {
       <h1 className="h1-bold text-dark100_light900">{result.name}</h1>
       <div className="mt-11 flex w-full grow">
         <LocalSearchBar
-          route="/tags"
+          route={`/tags/${params.id}`}
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
-          placeholder="Search amazing minds here..."
+          placeholder="Search tag questions..."
           otherClasses="flex-1"
         />
       </div>

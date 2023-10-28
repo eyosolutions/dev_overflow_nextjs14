@@ -6,19 +6,20 @@ import Filter from "@/components/shared/search/Filter";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { QuestionFilters } from "@/constants/filters";
 import { GetSavedQuestions } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 
-const SavedQuestionsPage = async () => {
+const SavedQuestionsPage = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();
   if (!userId) {
     return;
   }
-  const savedQuestions = await GetSavedQuestions({ clerkId: userId });
+  const savedQuestions = await GetSavedQuestions({ searchQuery: searchParams.q, clerkId: userId });
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
       <div className="mt-11 flex w-full grow justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
-          route="/tags"
+          route="/collection"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search amazing minds here..."

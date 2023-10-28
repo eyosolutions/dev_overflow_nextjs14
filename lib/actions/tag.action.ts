@@ -1,11 +1,11 @@
 "use server"
 
-import Tag from "@/database/tag.model";
+import Tag, { ITag } from "@/database/tag.model";
 import { connectToDatabase } from "../mongoose";
 import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopInteractedTagsParams } from "./shared.types";
 import User from "@/database/user.model";
-// import Question from "@/database/question.model";
 import { FilterQuery } from "mongoose";
+import Question from "@/database/question.model";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -41,7 +41,15 @@ export async function getAllTags(params: GetAllTagsParams) {
     connectToDatabase();
 
      // const { page = 1, pageSize = 20, filter, searchQuery } = params;
-     const tags = await Tag.find({});
+     const { searchQuery } = params;
+
+     const query: FilterQuery<typeof Tag> = searchQuery
+      ? {$or: [
+        { name: { $regex: new RegExp(searchQuery, 'i') } },
+      ]}
+      : { };
+
+     const tags = await Tag.find(query);
 
      return { tags };
 
@@ -59,28 +67,14 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     // const { tagId, page = 1, pageSize = 10, searchQuery } = params;
 
     // Adrian's approach
-    // const tagFilter: FilterQuery<ITag> = { _id: tagId };
-    // const tag = await Tag.findOne(tagFilter).populate({
-    //   path: 'questions',
-    //   match: searchQuery
-    //   ? { title: { $regex: searchQuery, $options: 'i' } }
-    //   : {},
-    //   options: {
-    //     sort: { createdAt: -1 }
-    //   },
-    //   populate: [
-    //     { path: 'tags', model: Tag, select: '_id name' },
-    //     { path: 'author', model: User, select: '_id clerkId name picture' }
-    //   ]
-    // });
-
-    const query: FilterQuery<typeof Tag> = searchQuery
-    ? { title: { $regex: new RegExp(searchQuery, 'i')} }
-    : { };
-
-    const tagResult = await Tag.findById(tagId).populate({
+    const tagFilter: FilterQuery<ITag> = { _id: tagId };
+    const tagResult = await Tag.findOne(tagFilter).populate({
       path: 'questions',
-      match: query,
+      model: Question,
+      match: searchQuery
+      ? {$or: [{ title: { $regex: searchQuery, $options: 'i' } },
+      { content: { $regex: searchQuery, $options: 'i' } }]}
+      : {},
       options: {
         sort: { createdAt: -1 }
       },
@@ -88,9 +82,28 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         { path: 'tags', model: Tag, select: '_id name' },
         { path: 'author', model: User, select: '_id clerkId name picture' }
       ]
-    })
+    });
+
+    // const query: FilterQuery<typeof Question> = searchQuery
+    // ? { $or: [
+    //   { title: { $regex: new RegExp(searchQuery, 'i')} },
+    //   { content: { $regex: new RegExp(searchQuery, 'i')} },
+    // ]}
+    // : { };
+
+    // const tagResult = await Tag.findById(tagId).populate({
+    //   path: 'questions',
+    //   match: query,
+    //   options: {
+    //     sort: { createdAt: -1 }
+    //   },
+    //   populate: [
+    //     { path: 'tags', model: Tag, select: '_id name' },
+    //     { path: 'author', model: User, select: '_id clerkId name picture' }
+    //   ]
+    // })
     
-    if (!tagResult) throw new Error("User not found");
+    if (!tagResult) throw new Error("Tag not found");
 
     // const questionsByTagId = result.questions;
 
