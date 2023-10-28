@@ -155,6 +155,7 @@ export async function deleteQuestion(params:DeleteQuestionParams) {
     await Answer.deleteMany({ question: questionId });
     await Interaction.deleteMany({ question: questionId });
     await Tag.updateMany({ questions: questionId }, { $pull: { questions: questionId }});
+    await User.updateMany({ saved: questionId }, { $pull: { saved: questionId }});
 
     revalidatePath(path);
 
@@ -181,6 +182,33 @@ export async function editQuestion(params: EditQuestionParams) {
 
     question.save();
     revalidatePath(path);
+
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getTopQuestions() {
+  try {
+    connectToDatabase();
+    const topQuestions = Question.find()
+      .sort({ upvotes: -1, views: -1 })
+      .limit(5)
+
+    // const topQuestions = Question.aggregate([
+    //   {
+    //     "$sort": {
+    //       upvotes: -1,
+    //       views: -1
+    //     }
+    //   },
+    //   {
+    //     "$limit": 5
+    //   }
+    // ])
+
+    return topQuestions;
 
   } catch (error) {
     console.log(error);

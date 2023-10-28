@@ -37,8 +37,16 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const parsedQuestionDetails = JSON.parse(questionDetails || '');
-  const groupTags = parsedQuestionDetails.tags.map((tag:any) => tag.name);
+  // console.log(questionDetails);
+
+  let parsedQuestionDetails:any;
+  let groupTags:any;
+
+  if (type === 'Edit') {
+    parsedQuestionDetails = JSON.parse(questionDetails || '');
+    groupTags = parsedQuestionDetails.tags.map((tag:any) => tag.name);
+  }
+
 
   // console.log("Tags: ", question.tags);
 
@@ -46,8 +54,8 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
     defaultValues: {
-      title: parsedQuestionDetails.title || '',
-      explanation: parsedQuestionDetails.content || '',
+      title: type === 'Edit' ? parsedQuestionDetails.title : '',
+      explanation: type === 'Edit' ? parsedQuestionDetails.content : '',
       tags: groupTags || [],
     },
   });
@@ -160,7 +168,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
                     editorRef.current = editor}}
                   onBlur={field.onBlur}
                   onEditorChange={(content) => field.onChange(content)}
-                  initialValue={parsedQuestionDetails.content || ''}
+                  initialValue={type === 'Edit' ? parsedQuestionDetails.content : ''}
                   init={{
                     height: 350,
                     menubar: false,
