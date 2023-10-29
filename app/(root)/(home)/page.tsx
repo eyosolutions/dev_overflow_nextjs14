@@ -13,11 +13,12 @@ import { SearchParamsProps } from "@/types";
 // import QuestionCard from "@/components/home/QuestionCard";
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
-  const { questions } = await getQuestions({
-    searchQuery: searchParams.q
+
+  const result = await getQuestions({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter
   });
 
-  // console.log(searchParams.q);
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -45,8 +46,8 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
         <HomeFilters />
       </div>
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ?
-          questions.map((question) => (
+        {result ?
+          result.questions.map((question:any) => (
           <QuestionCard
             key={question._id}
             _id={question._id}
