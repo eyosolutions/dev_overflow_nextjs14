@@ -13,7 +13,10 @@ const SavedQuestionsPage = async ({ searchParams }: SearchParamsProps) => {
   if (!userId) {
     return;
   }
-  const savedQuestions = await GetSavedQuestions({ searchQuery: searchParams.q, clerkId: userId });
+  const savedQuestions = await GetSavedQuestions({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    clerkId: userId });
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>

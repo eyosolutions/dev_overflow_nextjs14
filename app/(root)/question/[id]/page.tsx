@@ -1,4 +1,4 @@
-import { ParamsProps } from "@/types";
+import { URLProps } from "@/types";
 import { getQuestionById } from "@/lib/actions/question.action";
 import Link from "next/link";
 import RenderTag from "@/components/shared/RenderTag";
@@ -13,10 +13,10 @@ import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
 // import { viewQuestion } from "@/lib/actions/interaction.action";
 
-const DetailQuestionPage = async ({ params }: ParamsProps) => {
+const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
 
   const { userId: clerkId } = auth();
-
+ 
   const { question } = await getQuestionById({ questionId: params.id });
 
   let mongoUser: any;
@@ -24,11 +24,6 @@ const DetailQuestionPage = async ({ params }: ParamsProps) => {
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
   }
-
-  // await viewQuestion({
-  //   userId: mongoUser._id ? mongoUser._id : undefined,
-  //   questionId: question._id
-  // });
 
   return (
     <section>
@@ -114,6 +109,7 @@ const DetailQuestionPage = async ({ params }: ParamsProps) => {
         questionId={question._id}
         authorId={mongoUser._id}
         totalAnswers={question.answers.length}
+        filter={searchParams.filter}
       />
 
       {/* Client component causes rendering of page */}

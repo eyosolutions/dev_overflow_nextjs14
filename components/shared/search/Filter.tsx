@@ -61,7 +61,7 @@ const Filter = ({ filters, otherClasses, containerClasses }: FilterProps) => {
     //  className="background-light800_dark300 flex h-[3.5rem] grow max-sm:items-stretch md:hidden"
     <div className={`relative ${containerClasses}`}>
       <Select
-        value={`${active !== null ? active : ""}`}
+        defaultValue={`${active !== null ? active : ""}`}
         onValueChange={handleFilterClick}
       >
         {/* className="w-[180px]" */}

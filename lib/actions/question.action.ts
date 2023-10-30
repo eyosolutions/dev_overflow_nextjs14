@@ -58,56 +58,56 @@ export async function getQuestions(params: GetQuestionsParams) {
 };
 
 // Gell all questions by selected filter
-export async function getQuestionsByFilter(params:GetQuestionsParams) {
-  try {
-    connectToDatabase();
+// export async function getQuestionsByFilter(params:GetQuestionsParams) {
+//   try {
+//     connectToDatabase();
 
-    const { searchQuery } = params;
+//     const { searchQuery } = params;
 
-    let questions: any;
+//     let questions: any;
 
-    // const result = await Question.find({})
-    //   .populate({ path: 'tags', model: Tag })
-    //   .populate({ path: 'author', model: User })
-    //   .populate({ path: 'answers', model: Answer })
-    //   .sort({ createdAt: -1 })
+//     // const result = await Question.find({})
+//     //   .populate({ path: 'tags', model: Tag })
+//     //   .populate({ path: 'author', model: User })
+//     //   .populate({ path: 'answers', model: Answer })
+//     //   .sort({ createdAt: -1 })
 
-    if (searchQuery === 'newest') {
-      questions = await Question.find({})
-      .populate({ path: 'tags', model: Tag })
-      .populate({ path: 'author', model: User })
-      .sort({ createdAt: -1 })
+//     if (searchQuery === 'newest') {
+//       questions = await Question.find({})
+//       .populate({ path: 'tags', model: Tag })
+//       .populate({ path: 'author', model: User })
+//       .sort({ createdAt: -1 })
 
-    } else if (searchQuery === 'frequent') {
-      questions = await Question.find({})
-      .populate({ path: 'tags', model: Tag })
-      .populate({ path: 'author', model: User })
-      .sort({ views: -1 })
+//     } else if (searchQuery === 'frequent') {
+//       questions = await Question.find({})
+//       .populate({ path: 'tags', model: Tag })
+//       .populate({ path: 'author', model: User })
+//       .sort({ views: -1 })
 
-    }else if (searchQuery === 'unanswered') {
-      const result = await Question.find({})
-      .populate({ path: 'tags', model: Tag })
-      .populate({ path: 'author', model: User })
-      .populate({ path: 'answers', model: Answer })
+//     }else if (searchQuery === 'unanswered') {
+//       const result = await Question.find({})
+//       .populate({ path: 'tags', model: Tag })
+//       .populate({ path: 'author', model: User })
+//       .populate({ path: 'answers', model: Answer })
     
-      questions = result.filter((item) => item.answers.length === 0)
-      // questions = result.answers.map((item:any) => item).filter((item) => item.length === 0)
-      // console.log(questions);
+//       questions = result.filter((item) => item.answers.length === 0)
+//       // questions = result.answers.map((item:any) => item).filter((item) => item.length === 0)
+//       // console.log(questions);
 
-    } else if (searchQuery === 'recommended') {
-      questions = await Question.find({})
-      .populate({ path: 'tags', model: Tag })
-      .populate({ path: 'author', model: User })
-      .sort({ upvotes: -1 })
-    }
+//     } else if (searchQuery === 'recommended') {
+//       questions = await Question.find({})
+//       .populate({ path: 'tags', model: Tag })
+//       .populate({ path: 'author', model: User })
+//       .sort({ upvotes: -1 })
+//     }
 
-    return { questions };
+//     return { questions };
 
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-}
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// }
 
 // Like API POST - Create a question
 export async function createQuestion(params: CreateQuestionParams) {

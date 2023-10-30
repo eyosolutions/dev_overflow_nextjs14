@@ -9,7 +9,10 @@ import Link from "next/link";
 
 const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
   
-  const { users } = await getAllUsers({ searchQuery: searchParams.q });
+  const { users } = await getAllUsers({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter
+  });
 
   if (!users) return;
 

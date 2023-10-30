@@ -103,7 +103,8 @@ export async function getAllUsers(params: GetAllUsersParams) {
     await connectToDatabase();
 
     // const { page = 1, pageSize = 20, filter, searchQuery } = params;
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
+    let sortOptions = {};
 
     const query: FilterQuery<typeof User> = searchQuery
     ? {$or: [
@@ -112,8 +113,23 @@ export async function getAllUsers(params: GetAllUsersParams) {
     ]}
     : { };
 
+    switch (filter) {
+      case "new_users":
+        sortOptions = { joinedAt: -1 }
+        break;
+      case "old_users":
+        sortOptions = { joinedAt: 1 }
+        break;
+      case "top_contributors":
+        sortOptions = { reputation: -1 }
+        break;
+
+      default:
+        break;
+    }
+
     const users = await User.find(query)
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
 
     return { users };
 
@@ -154,7 +170,8 @@ export async function GetSavedQuestions(params: GetSavedQuestionsParams) {
     await connectToDatabase();
 
     // const { clerkId, page = 1, pageSize = 10, filter, searchQuery } = params;
-    const { clerkId, searchQuery } = params;
+    const { clerkId, searchQuery, filter } = params;
+    let sortOptions = {};
 
     const query: FilterQuery<typeof Question> = searchQuery
     ? {$or: [
@@ -162,11 +179,33 @@ export async function GetSavedQuestions(params: GetSavedQuestionsParams) {
     ]}
     : { };
 
+    switch (filter) {
+      case "most_recent":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortOptions = { createdAt: 1 };
+        break;
+      case "most_voted":
+        sortOptions = { upvotes: -1 };
+        break;
+      case "most_viewed":
+        sortOptions = { views: -1 };
+        break;
+      case "most_answered":
+        // sort({ $expr: { $gt: [{ $size: '$myArray' }, 0] } })
+        sortOptions = { 'saved.answers': -1 };
+        break;
+    
+      default:
+        break;
+    }
+
     const user = await User.findOne({ clerkId }).populate({
       path: 'saved',
       match: query,
       options: {
-        sort: { createdAt: -1 }
+        sort: sortOptions
       },
       populate: [
         { path: 'tags', model: Tag, select: '_id name' },

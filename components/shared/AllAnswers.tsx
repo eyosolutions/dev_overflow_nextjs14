@@ -16,14 +16,17 @@ interface Props {
 }
 
 const AllAnswers = async ({ questionId, authorId, totalAnswers, page, filter }: Props) => {
-  const result = await getAnswersPerQuestion({ questionId, })
-  // console.log('Answer Model: ', result.answers)
+  
+  const result = await getAnswersPerQuestion({ questionId, sortBy: filter })
+  
   return (
     <div className="mt-11">
       <div className="flex items-center justify-between">
         <h3 className="primary-text-gradient">{totalAnswers} Answers</h3>
 
-        <Filter filters={AnswerFilters}/>
+        <Filter
+          filters={AnswerFilters}
+        />
       </div>
       <div>
         {result.answers.map((answer) => (
