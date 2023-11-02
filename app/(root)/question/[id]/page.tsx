@@ -11,7 +11,6 @@ import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/lib/actions/user.action";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
-// import { viewQuestion } from "@/lib/actions/interaction.action";
 
 const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
 
@@ -110,8 +109,8 @@ const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
         authorId={mongoUser._id}
         totalAnswers={question.answers.length}
         filter={searchParams.filter}
+        page={searchParams.page ? +searchParams.page : 1}
       />
-
       {/* Client component causes rendering of page */}
       <AnswerForm
         question={question.content}

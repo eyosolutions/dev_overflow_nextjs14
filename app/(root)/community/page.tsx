@@ -1,5 +1,6 @@
 
 import UserCard from "@/components/cards/UserCard";
+import Pagination from "@/components/shared/Pagination";
 import Filter from "@/components/shared/search/Filter";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { UserFilters } from "@/constants/filters";
@@ -9,12 +10,13 @@ import Link from "next/link";
 
 const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
   
-  const { users } = await getAllUsers({
+  const result = await getAllUsers({
     searchQuery: searchParams.q,
-    filter: searchParams.filter
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1 
   });
 
-  if (!users) return;
+  if (!result.users) return;
 
   return (
     <>
@@ -31,13 +33,13 @@ const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
           filters={UserFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
         />
-        {/* <HomeFilters /> */}
+       
       </div>
 
       {/* Get all users and their tags; and pass the ff as props */}
       <section className="mt-12 flex flex-wrap gap-4">
-        {users.length > 0 ? (
-        users.map((user) => (
+        {result?.users.length > 0 ? (
+        result?.users.map((user) => (
           <UserCard
             key={user._id}
             user={user}
@@ -52,6 +54,14 @@ const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
         )
         }
       </section>
+
+      {/* Pagination */}
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams.page ? +searchParams.page : 1}
+          isNext={result?.isNext}
+        />
+      </div>
     </>
   );
 };

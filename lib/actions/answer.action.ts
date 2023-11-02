@@ -33,14 +33,14 @@ export async function getAnswersPerQuestion(params: GetAnswersParams) {
   try {
     connectToDatabase();
 
-    const { questionId, sortBy } = params;
+    const { questionId, sortBy, page = 1, pageSize = 20 } = params;
     let sortOptions = {};
 
     switch (sortBy) {
-      case "highestupvotes":
+      case "highest_upvotes":
         sortOptions = { upvotes: -1 };
         break;
-      case "lowestupvotes":
+      case "lowest_upvotes":
         sortOptions = { upvotes: 1 };
         break;
       case "recent":
@@ -54,18 +54,24 @@ export async function getAnswersPerQuestion(params: GetAnswersParams) {
         break;
     }
 
+    const totalAnswersByQuestion = await Answer.countDocuments({question: questionId});
+
+    const skipAmount = (page > 0 && !Number.isNaN(page)) ? (page - 1) * pageSize : totalAnswersByQuestion;
+
     const answers = await Answer.find({question: questionId})
       .populate("author", "_id clerkId name picture")
+      .skip(skipAmount)
+      .limit(pageSize)
       .sort(sortOptions)
 
-    return { answers };
+    const isNext = totalAnswersByQuestion > skipAmount + answers.length;
+    return { answers, isNext };
 
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
-
 
 // Upvoting an answer server action
 export async function upvoteAnswer(params: AnswerVoteParams) {
