@@ -286,18 +286,6 @@ export async function getTopQuestions() {
       .sort({ upvotes: -1, views: -1 })
       .limit(5)
 
-    // const topQuestions = Question.aggregate([
-    //   {
-    //     "$sort": {
-    //       upvotes: -1,
-    //       views: -1
-    //     }
-    //   },
-    //   {
-    //     "$limit": 5
-    //   }
-    // ])
-
     return topQuestions;
 
   } catch (error) {
