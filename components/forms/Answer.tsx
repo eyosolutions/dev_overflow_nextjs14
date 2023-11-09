@@ -21,6 +21,8 @@ interface AnswerParams {
 const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
   const { mode } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingAI, setIsSubmittingAI] = useState(false);
+
   const editorRef = useRef(null);
   const pathname = usePathname();
 
@@ -55,6 +57,35 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
       setIsSubmitting(false);
     }
   };
+  // Handle AI Button click function
+  const generateAIAnswer = async () => {
+    if (!authorId) return;
+    setIsSubmittingAI(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, {
+        method: 'POST',
+        body: JSON.stringify({ question })
+      });
+      const aiAnswer = await response.json();
+      // alert(aiAnswer.reply);
+
+      if (!aiAnswer.reply)
+        return;
+      
+      const formattedAIAnswer = aiAnswer.reply.replace(/\n/g, '<br />');
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formattedAIAnswer);
+      }
+
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setIsSubmittingAI(false);
+    }
+  };
 
   return (
     <div className="mt-6">
@@ -64,15 +95,21 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
         </h4>
         <Button
           className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none"
-          onClick={() => {}}
+          onClick={generateAIAnswer}
         >
-          <Image
-            src="/assets/icons/stars.svg"
-            alt="star"
-            width={12}
-            height={12}
-          />
-          Generate an AI Answer
+          {isSubmittingAI ? (
+            <>Generating...</>
+          ) : (
+            <>
+              <Image
+                src="/assets/icons/stars.svg"
+                alt="star"
+                width={12}
+                height={12}
+              />
+              Generate AI Answer
+            </>
+          )}
         </Button>
       </div>
       <Form {...form}>
@@ -94,6 +131,7 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
                       editorRef.current = editor}}
                     onBlur={field.onBlur}
                     onEditorChange={(content) => field.onChange(content)}
+                    initialValue={editorRef.current || ''}
                     init={{
                       height: 350,
                       menubar: false,

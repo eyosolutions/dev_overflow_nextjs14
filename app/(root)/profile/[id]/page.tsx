@@ -18,9 +18,6 @@ import AnswersTab from "@/components/shared/AnswersTab";
 
 
 const UserProfilePage = async ({ params, searchParams }: URLProps) => {
-  // My version of server action
-  // const { user, questions, answers } = await getUserProfile({ userId: params.id });
-
   // Adrian's version
   const { userId: clerkId } = auth();
   const userInfo = await getUserInfo({ userId: params.id });
@@ -79,6 +76,8 @@ const UserProfilePage = async ({ params, searchParams }: URLProps) => {
       <Stats
         totalQuestions={userInfo.totalQuestions}
         totalAnswers={userInfo.totalAnswers}
+        badges={userInfo?.badgeCounts}
+        reputation={userInfo?.reputation}
       />
 
       <div className="mt-10 flex gap-10">

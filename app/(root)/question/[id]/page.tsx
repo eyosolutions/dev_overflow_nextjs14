@@ -45,11 +45,11 @@ const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
             <Votes
               type="question"
               typeId={JSON.stringify(question._id)}
-              authorId={JSON.stringify(mongoUser._id)}
+              authorId={JSON.stringify(mongoUser?._id)}
               upvotes={question.upvotes.length}
-              hasUpvoted={question.upvotes.includes(mongoUser._id)}
+              hasUpvoted={question.upvotes.includes(mongoUser?._id)}
               downvotes={question.downvotes.length}
-              hasDownvoted={question.downvotes.includes(mongoUser._id)}
+              hasDownvoted={question.downvotes.includes(mongoUser?._id)}
               hasSaved={mongoUser?.saved.includes(question._id)}
             />
           </div>
@@ -106,7 +106,7 @@ const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
       {/* Server component that renders Votes component as well */}
       <AllAnswers
         questionId={question._id}
-        authorId={mongoUser._id}
+        authorId={mongoUser?._id}
         totalAnswers={question.answers.length}
         filter={searchParams.filter}
         page={searchParams.page ? +searchParams.page : 1}
@@ -115,7 +115,7 @@ const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
       <AnswerForm
         question={question.content}
         questionId={JSON.stringify(question._id)}
-        authorId={JSON.stringify(mongoUser._id)}
+        authorId={JSON.stringify(mongoUser?._id)}
       />
     </section>
   );
