@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   clerkId: string;
@@ -52,6 +53,12 @@ const EditProfile = ({ clerkId, user }: Props) => {
         },
         path: pathname,
       });
+      
+      toast({
+        title: 'Profile edited successfully!',
+        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      });
+
       router.back();
 
     } catch (error) {

@@ -21,6 +21,7 @@ import Image from 'next/image';
 import { createQuestion, editQuestion } from '@/lib/actions/question.action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeProvider';
+import { toast } from '../ui/use-toast';
 
 // const type: any = "Create";
 
@@ -63,6 +64,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
+    let title = '';
     try {
       if (type === 'Edit') {
         await editQuestion({
@@ -71,6 +73,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
           content: values.explanation,
           path: pathname,
         })
+        title = 'Question edited successfully';
         // navigate to the question page after updating a question
         router.push(`/question/${parsedQuestionDetails._id}`);
       } else {
@@ -81,9 +84,15 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
           author: JSON.parse(mongoUserId),
           path: pathname
         });
+        title = 'Question created successfully';
         // navigate to hompage after submitting a question
          router.push("/");
       }
+
+      toast({
+        title,
+        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      });
 
     } catch (error) {
       

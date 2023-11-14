@@ -7,6 +7,8 @@ import { formatNumberWithPostfix } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "../ui/use-toast";
+// import { useToast } from "@/components/ui/use-toast";
 
 interface Props {
   type: string;
@@ -23,6 +25,7 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
   
   const pathname = usePathname();
   const router = useRouter();
+  // const { toast } = useToast();
 
   const handleSave = async () => {
     await toggleSaveQuestion({
@@ -35,7 +38,13 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
 
   // handling upvote and downvote of questions and answers
   const handleVote = async (action: string) => {
-    if (!authorId) return;
+    if (!authorId) {
+      return toast({
+        title: 'Please log in',
+        description: `You must be logged in to perform this action`,
+        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      })
+    }
 
     const objectParams = {
       userId: JSON.parse(authorId),
@@ -50,6 +59,11 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
       } else if (type === "answer") {
         await upvoteAnswer({ answerId: JSON.parse(typeId), ...objectParams, });
       }
+      return toast({
+        variant: `${!hasUpvoted ? 'default' : 'destructive'}`,
+        title: `Upvote ${!hasUpvoted ? 'Successful' : 'Removed'}`,
+        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      })
     }
 
     if (action === "downvote") {
@@ -58,6 +72,11 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
       } else if (type === "answer") {
         await downvoteAnswer({ answerId: JSON.parse(typeId), ...objectParams, });
       }
+      return toast({
+        variant: `${!hasDownvoted ? 'default' : 'destructive'}`,
+        title: `Downvote ${!hasDownvoted ? 'Successful' : 'Removed'}`,
+        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      })
     }
   }
 

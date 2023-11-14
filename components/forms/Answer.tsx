@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
+import { toast } from "../ui/use-toast";
 
 interface AnswerParams {
   authorId: string;
@@ -45,6 +46,11 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
 
       form.reset();
 
+      toast({
+        title: 'Answer submitted successfully!',
+        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      });
+
       if (editorRef.current) {
         const editor = editorRef.current as any;
         editor.setContent('');
@@ -59,7 +65,13 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
   };
   // Handle AI Button click function
   const generateAIAnswer = async () => {
-    if (!authorId) return;
+    if (!authorId) {
+      return toast({
+        title: 'Please log in',
+        description: `You must be logged in to perform this action`,
+        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      })
+    }
     setIsSubmittingAI(true);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, {
@@ -68,15 +80,26 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
       });
       const aiAnswer = await response.json();
       // alert(aiAnswer.reply);
+      console.log(aiAnswer);
 
-      if (!aiAnswer.reply)
-        return;
+      if (!aiAnswer.reply) {
+        return toast({
+          title: 'AI Answer Failed',
+          description: `The AI encountered an error while generating an answer!`,
+          className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+        });
+      }
       
       const formattedAIAnswer = aiAnswer.reply.replace(/\n/g, '<br />');
 
       if (editorRef.current) {
         const editor = editorRef.current as any;
         editor.setContent(formattedAIAnswer);
+        toast({
+          title: 'AI Answer Generated',
+          description: 'The AI has successfully generated an answer based on your query.',
+          className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+        });
       }
 
     } catch (error) {
