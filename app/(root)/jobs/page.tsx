@@ -1,4 +1,8 @@
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Jobs | DevOverflow',
+}
 const JobsPage = () => {
   return (
     <div>

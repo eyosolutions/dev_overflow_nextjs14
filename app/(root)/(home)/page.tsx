@@ -1,4 +1,3 @@
-// import RenderTag from "@/components/shared/RenderTag";
 import Filter from "@/components/shared/search/Filter";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { Button } from "@/components/ui/button";
@@ -8,11 +7,13 @@ import HomeFilters from "@/components/home/HomeFilters";
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getQuestions } from "@/lib/actions/question.action";
-// import { SearchParams } from "@/lib/actions/shared.types";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
-// import QuestionCard from "@/components/home/QuestionCard";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Home | DevOverflow',
+}
 const Home = async ({ searchParams }: SearchParamsProps) => {
 
   const result = await getQuestions({

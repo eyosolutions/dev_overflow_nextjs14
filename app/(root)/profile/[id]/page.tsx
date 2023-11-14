@@ -1,10 +1,6 @@
 
-// import QuestionCard from "@/components/cards/QuestionCard";
-// import RenderTag from "@/components/shared/RenderTag";
-// import UserPosts from "@/components/shared/UserPosts";
 import { Button } from "@/components/ui/button";
 import { getUserInfo } from "@/lib/actions/user.action";
-// import { formatToMonthAndYear } from "@/lib/utils";
 import { URLProps } from "@/types";
 import { SignedIn, auth } from "@clerk/nextjs";
 import Image from "next/image";
@@ -15,6 +11,11 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswersTab from "@/components/shared/AnswersTab";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Profile | DevOverflow',
+}
 
 
 const UserProfilePage = async ({ params, searchParams }: URLProps) => {

@@ -6,6 +6,11 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Tags | DevOverflow',
+}
 
 const TagsPage = async ({ searchParams }: SearchParamsProps) => {
 
