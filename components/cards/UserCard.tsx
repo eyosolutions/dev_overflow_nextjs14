@@ -37,7 +37,7 @@ const UserCard = async ({ user }: UserCardProps) => {
         <div className="absolute bottom-8 left-auto">
           {tags.length > 0 ? (
             <div className="flex items-center gap-2">
-              {tags.slice(0, 3).map((tag) => (
+              {tags.map((tag) => (
                 <RenderTag
                   key={tag._id}
                   _id={tag._id}

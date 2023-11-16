@@ -28,11 +28,25 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
   // const { toast } = useToast();
 
   const handleSave = async () => {
+    if (!authorId) {
+      return toast({
+        title: 'Please log in',
+        description: `You must be logged in to perform this action`,
+        // className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+      })
+    }
+    
     await toggleSaveQuestion({
       userId: JSON.parse(authorId),
       questionId: JSON.parse(typeId),
       path: pathname
     });
+    return toast({
+      // Question saved in your collection
+      variant: `${!hasSaved ? 'default' : 'destructive'}`,
+      title: `Question ${!hasSaved ? 'saved to' : 'removed from'} your collection`,
+      // className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+    })
   }
 
 
@@ -42,7 +56,7 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
       return toast({
         title: 'Please log in',
         description: `You must be logged in to perform this action`,
-        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+        // className: 'subtle-medium text-dark400_light900 background-light700_dark400',
       })
     }
 
@@ -62,7 +76,7 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
       return toast({
         variant: `${!hasUpvoted ? 'default' : 'destructive'}`,
         title: `Upvote ${!hasUpvoted ? 'Successful' : 'Removed'}`,
-        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+        // className: 'subtle-medium text-dark400_light900 background-light700_dark400',
       })
     }
 
@@ -75,7 +89,7 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
       return toast({
         variant: `${!hasDownvoted ? 'default' : 'destructive'}`,
         title: `Downvote ${!hasDownvoted ? 'Successful' : 'Removed'}`,
-        className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+        // className: 'subtle-medium text-dark400_light900 background-light700_dark400',
       })
     }
   }

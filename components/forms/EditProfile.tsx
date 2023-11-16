@@ -83,7 +83,7 @@ const EditProfile = ({ clerkId, user }: Props) => {
               <FormControl className="mt-3.5">
                 <Input
                   placeholder="Your Name"
-                  className="paragraph-regular no-focus background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="paragraph-regular no-focus background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />
@@ -101,7 +101,7 @@ const EditProfile = ({ clerkId, user }: Props) => {
               <FormControl className="mt-3.5">
                 <Input
                   placeholder="Your username"
-                  className="paragraph-regular no-focus background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="paragraph-regular no-focus background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />
@@ -119,7 +119,7 @@ const EditProfile = ({ clerkId, user }: Props) => {
               <FormControl className="mt-3.5">
                 <Input
                   placeholder="Your Portfolio link"
-                  className="paragraph-regular no-focus background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="paragraph-regular no-focus background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />
@@ -137,7 +137,7 @@ const EditProfile = ({ clerkId, user }: Props) => {
               <FormControl className="mt-3.5">
                 <Input
                   placeholder="Where do you live?"
-                  className="paragraph-regular no-focus background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="paragraph-regular no-focus background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />
@@ -156,7 +156,7 @@ const EditProfile = ({ clerkId, user }: Props) => {
                 <Textarea
                   placeholder="What's special about you?"
                   rows={5}
-                  className="paragraph-regular no-focus background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] resize-none border"
+                  className="paragraph-regular no-focus background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] resize-none border"
                   {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />

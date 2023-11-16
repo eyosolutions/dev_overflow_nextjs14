@@ -11,15 +11,15 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
     connectToDatabase();
 
-    const { userId } = params;
+    const { userId, limit = 3 } = params;
 
-    // const user = await User.findById(userId);
+    const user = await User.findById(JSON.parse(userId));
 
-    // if (!user) throw new Error('User not found');
+    if (!user) throw new Error('User not found');
 
     const tags = await Tag.find({
-      followers: { $elemMatch: { $eq: `${JSON.parse(userId)}` } }
-    })
+      followers: { $elemMatch: { $eq: user._id } }
+    }).limit(limit)
 
     return { tags };
    

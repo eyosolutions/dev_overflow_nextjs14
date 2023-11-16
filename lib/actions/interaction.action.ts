@@ -28,7 +28,7 @@ export async function viewQuestion(params: ViewQuestionParams) {
       await Interaction.create({
         user: userId,
         action: 'view',
-        question: questionId,      
+        question: questionId,
       })
     }
 
