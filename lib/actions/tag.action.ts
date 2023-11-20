@@ -6,28 +6,64 @@ import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopInteractedTagsParams
 import User from "@/database/user.model";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.model";
+import Interaction from "@/database/interaction.model";
 
+// export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
+//   try {
+//     connectToDatabase();
+
+//     const { userId, limit = 3 } = params;
+
+//     const user = await User.findById(JSON.parse(userId));
+
+//     if (!user) throw new Error('User not found');
+
+//     const tags = await Tag.find({
+//       followers: { $elemMatch: { $eq: user._id } }
+//     }).limit(limit)
+
+//     return { tags };
+   
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// };
+
+// Adrian's Version
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { userId, limit = 3 } = params;
 
-    const user = await User.findById(JSON.parse(userId));
+    // Find the user by clerkId
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-    if (!user) throw new Error('User not found');
+    // Find interactions for the user and group by tags
+    const tagCountMap = await Interaction.aggregate([
+      { $match: { user: user._id, tags: { $exists: true, $ne: [] } } },
+      { $unwind: "$tags" },
+      { $group: { _id: "$tags", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: limit },
+    ]);
 
-    const tags = await Tag.find({
-      followers: { $elemMatch: { $eq: user._id } }
-    }).limit(limit)
+    const topTags = tagCountMap.map((tagCount) => tagCount._id);
 
-    return { tags };
-   
+    // Find the tag documents for the top tags
+    const topTagDocuments = await Tag.find({ _id: { $in: topTags } });
+
+    return topTagDocuments;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching top interacted tags:", error);
     throw error;
   }
 };
+
 
 export async function getAllTags(params: GetAllTagsParams) {
   try {

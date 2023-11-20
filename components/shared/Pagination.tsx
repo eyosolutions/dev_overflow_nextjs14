@@ -25,9 +25,9 @@ const Pagination = ({ pageNumber, isNext }: PageProps) => {
   };
 
   if (!isNext && pageNumber === 1) return null;
-
+// className="light-border border-b py-10"
   return (
-    <div className="flex w-full items-center justify-center gap-2">
+    <div className="light-border flex w-full items-center justify-center gap-2 border-t pt-10">
       <Button
         disabled={pageNumber === 1}
         className="btn light-border-2 flex min-h-[36px] items-center justify-center gap-2 border"

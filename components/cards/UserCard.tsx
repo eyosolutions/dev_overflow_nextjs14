@@ -15,9 +15,9 @@ interface UserCardProps {
 
 const UserCard = async ({ user }: UserCardProps) => {
 
-  const id = JSON.stringify(user._id);
+  // const id = JSON.stringify(user._id);
 
-  const { tags } = await getTopInteractedTags({ userId: id });
+  const tags = await getTopInteractedTags({ userId: user._id });
     
   return (
       <article className="shadow-light100_darknone background-light900_dark200 light-border relative flex flex-col items-center justify-center rounded-2xl border max-xs:min-w-full xs:w-[260px]">

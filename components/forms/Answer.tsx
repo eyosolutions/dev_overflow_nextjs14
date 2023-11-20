@@ -37,6 +37,13 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
   const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
     setIsSubmitting(true);
     try {
+      if (!authorId) {
+        return toast({
+          title: 'Please log in',
+          description: `You must be logged in to perform this action`,
+          className: 'subtle-medium text-dark400_light900 background-light700_dark400',
+        })
+      }
       await createAnswer({
         content: values.answer,
         question: JSON.parse(questionId),
@@ -80,7 +87,7 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
       });
       const aiAnswer = await response.json();
       // alert(aiAnswer.reply);
-      console.log(aiAnswer);
+      // console.log(aiAnswer);
 
       if (!aiAnswer.reply) {
         return toast({
