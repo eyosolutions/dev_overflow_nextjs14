@@ -1,17 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
 
 const LoadingHome = () => {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
-        <Link href="" className="flex justify-end max-sm:w-full">
+        <div className="flex justify-end max-sm:w-full">
           <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900">
             Ask a Question
           </Button>
-        </Link>
+        </div>
       </div>
       {/*  max-sm:flex-col sm:items-center md:flex-col md:gap-0 */}
       <div className="mb-12 mt-11 flex flex-wrap items-center justify-between gap-5">
