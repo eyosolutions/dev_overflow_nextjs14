@@ -29,14 +29,6 @@ const JobsPage = async ({ searchParams }: SearchParamsProps) => {
   const countryName = searchParams.location || userCountry.country;
   const searchedCountry = sortedCountries.find((country: any) => country.name === countryName);
 
-  // console.log(searchedCountry);
-  // const sortedCountries = countries
-  // .map((country: any) => country.name)
-  // .sort()
-  // .map((country: string) => ({ name: country, value: country }));
-
-  // console.log(sortedCountries);
-
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Jobs</h1>
