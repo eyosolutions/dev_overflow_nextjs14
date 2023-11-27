@@ -21,7 +21,7 @@ const QuestionMetric = ({
   questionCreatedAt,
 }: Props) => {
 
-  const [views, setViews] = useState(questionViews);
+  const [views, setViews] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
 
