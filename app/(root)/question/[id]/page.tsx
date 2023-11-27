@@ -2,8 +2,8 @@ import { URLProps } from "@/types";
 import { getQuestionById } from "@/lib/actions/question.action";
 import Link from "next/link";
 import RenderTag from "@/components/shared/RenderTag";
-import Metric from "@/components/shared/Metric";
-import { formatNumberWithPostfix, getTimestamp } from "@/lib/utils";
+// import Metric from "@/components/shared/Metric";
+// import { formatNumberWithPostfix, getTimestamp } from "@/lib/utils";
 import Image from "next/image";
 import ParseHTML from "@/components/shared/ParseHTML";
 import AnswerForm from "@/components/forms/Answer";
@@ -11,6 +11,7 @@ import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/lib/actions/user.action";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
+import QuestionMetric from "@/components/shared/QuestionMetric";
 
 const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
 
@@ -61,26 +62,12 @@ const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
 
       {/* Metrics for Questions */}
       <div className="mb-8 mt-5 flex flex-wrap gap-4">
-        <Metric
-          imgUrl="/assets/icons/clock.svg"
-          alt="clock icon"
-          value={` asked ${getTimestamp(question.createdAt)}`}
-          title=""
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/message.svg"
-          alt="Message"
-          value={formatNumberWithPostfix(question.answers.length)}
-          title=" Answers"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/eye.svg"
-          alt="Eye"
-          value={formatNumberWithPostfix(question.views)}
-          title=" Views"
-          textStyles="small-medium text-dark400_light800"
+        <QuestionMetric
+          numberOfAnswers={question.answers.length}
+          questionViews={question.views}
+          questionCreatedAt={question.createdAt}
+          typeId={JSON.stringify(question._id)}
+          authorId={JSON.stringify(mongoUser?._id)}
         />
       </div>
 

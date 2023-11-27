@@ -1,12 +1,12 @@
 "use client"
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
-import { viewQuestion } from "@/lib/actions/interaction.action";
+// import { viewQuestion } from "@/lib/actions/interaction.action";
 import { downvoteQuestion, upvoteQuestion } from "@/lib/actions/question.action";
 import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { formatNumberWithPostfix } from "@/lib/utils";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+// import { useEffect } from "react";
 import { toast } from "../ui/use-toast";
 // import { useToast } from "@/components/ui/use-toast";
 
@@ -22,9 +22,9 @@ interface Props {
 };
 
 const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDownvoted, hasSaved }: Props) => {
-  
+
   const pathname = usePathname();
-  const router = useRouter();
+  // const router = useRouter();
   // const { toast } = useToast();
 
   const handleSave = async () => {
@@ -94,14 +94,6 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
     }
   }
 
-  useEffect(() => {
-    viewQuestion({
-      userId: authorId ? JSON.parse(authorId) : undefined,
-      questionId: JSON.parse(typeId)
-    })
-  
-  }, [typeId, authorId, pathname, router])
-  
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
