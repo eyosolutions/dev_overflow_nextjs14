@@ -3,7 +3,6 @@ import { formatNumberWithPostfix, getTimestamp } from '@/lib/utils';
 import Metric from './Metric';
 import { useEffect, useState } from 'react';
 import { viewQuestion } from '@/lib/actions/interaction.action';
-import { usePathname, useRouter } from 'next/navigation';
 
 interface Props {
   numberOfAnswers: number;
@@ -22,8 +21,6 @@ const QuestionMetric = ({
 }: Props) => {
 
   const [views, setViews] = useState(questionViews);
-  const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     const fetchViews = async () => {
@@ -40,9 +37,10 @@ const QuestionMetric = ({
       }
     }
   
-    fetchViews();
-    
-  }, [authorId, typeId, pathname, router])
+    if (questionViews === views) {
+      fetchViews();
+    }
+  })
 
   return (
     <>
