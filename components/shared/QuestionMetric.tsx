@@ -28,12 +28,11 @@ const QuestionMetric = ({
   useEffect(() => {
     const fetchViews = async () => {
       try {
-        const result: any = await viewQuestion({
+        const result = await viewQuestion({
           userId: authorId ? JSON.parse(authorId) : undefined,
           questionId: JSON.parse(typeId)
         });
-        setViews(result?.views);
-        alert(views)
+        setViews(result);
         
       } catch (error) {
         console.error('Error fetching updated views: ', error);
@@ -41,9 +40,8 @@ const QuestionMetric = ({
     }
   
     fetchViews();
-    // alert(views);
     
-  }, [typeId, authorId, pathname, router])
+  }, [authorId, typeId, pathname, router])
 
   return (
     <>

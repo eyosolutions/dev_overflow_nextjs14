@@ -33,7 +33,7 @@ export async function viewQuestion(params: ViewQuestionParams) {
       })
     }
 
-    return { views } 
+    return views;
 
   } catch (error) {
     console.log(error);
