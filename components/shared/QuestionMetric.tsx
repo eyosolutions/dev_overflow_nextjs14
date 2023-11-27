@@ -21,7 +21,7 @@ const QuestionMetric = ({
   questionCreatedAt,
 }: Props) => {
 
-  const [views, setViews] = useState(0);
+  const [views, setViews] = useState(questionViews);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -33,6 +33,7 @@ const QuestionMetric = ({
           questionId: JSON.parse(typeId)
         });
         setViews(result?.views);
+        alert(views)
         
       } catch (error) {
         console.error('Error fetching updated views: ', error);
