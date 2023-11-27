@@ -33,7 +33,7 @@ const QuestionMetric = ({
           questionId: JSON.parse(typeId)
         });
         setViews(result?.views);
-        console.log('API Result: ', result);
+        console.log('API Result: ', result?.views);
         
       } catch (error) {
         console.error('Error fetching updated views: ', error);
