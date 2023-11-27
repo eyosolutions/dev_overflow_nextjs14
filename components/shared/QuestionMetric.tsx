@@ -21,7 +21,6 @@ const QuestionMetric = ({
 }: Props) => {
 
   const [views, setViews] = useState(questionViews);
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const fetchViews = async () => {
@@ -37,15 +36,15 @@ const QuestionMetric = ({
         console.error('Error fetching updated views: ', error);
       }
     }
-  
+    
+    console.log('Question Views: ', questionViews)
+    console.log('Views: ', views)
+    
     if (questionViews === views) {
       fetchViews();
     }
-    setCount((prev) => prev + 1);
     
-  }, [questionViews, views, authorId, typeId])
-
-  console.log('count: ', count)
+  })
 
   return (
     <>
