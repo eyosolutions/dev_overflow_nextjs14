@@ -5,14 +5,13 @@ import { connectToDatabase } from "../mongoose";
 import { ViewQuestionParams } from "./shared.types";
 import Interaction from "@/database/interaction.model";
 
-export async function viewQuestion(params: ViewQuestionParams) {
+export async function updateQuestionViews(params: ViewQuestionParams) {
   try {
     connectToDatabase();
 
     const { questionId, userId } = params;
 
-    const updatedQuestion = await Question.findByIdAndUpdate(questionId, { $inc: { views: 1 }});
-    const views = updatedQuestion.views;
+    await Question.findByIdAndUpdate(questionId, { $inc: { views: 1 }});
 
     if (userId) {
       const existingInteraction = await Interaction.findOne({
@@ -32,8 +31,6 @@ export async function viewQuestion(params: ViewQuestionParams) {
         question: questionId,
       })
     }
-
-    return { views };
 
   } catch (error) {
     console.log(error);

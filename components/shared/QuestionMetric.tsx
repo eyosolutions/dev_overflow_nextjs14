@@ -2,19 +2,17 @@
 import { formatNumberWithPostfix, getTimestamp } from '@/lib/utils';
 import Metric from './Metric';
 import { useEffect, useState } from 'react';
-import { viewQuestion } from '@/lib/actions/interaction.action';
+import { getQuestionViews } from '@/lib/actions/question.action';
 
 interface Props {
   numberOfAnswers: number;
   questionViews: number;
   questionCreatedAt: string;
   typeId: string;
-  authorId: string;
 };
 
 const QuestionMetric = ({
   typeId,
-  authorId,
   questionViews,
   numberOfAnswers,
   questionCreatedAt,
@@ -25,23 +23,20 @@ const QuestionMetric = ({
   useEffect(() => {
     const fetchViews = async () => {
       try {
-        const result = await viewQuestion({
-          userId: authorId ? JSON.parse(authorId) : undefined,
+        const result = await getQuestionViews({
           questionId: JSON.parse(typeId)
         });
         setViews(result?.views);
-        // console.log('API Result: ', result?.views);
+        // console.log('API Result: ', result);
         
       } catch (error) {
         console.error('Error fetching updated views: ', error);
       }
     }
 
-    if (questionViews > views - 2) {
-      fetchViews();
-    }
-    
-  }, [questionViews, views, authorId, typeId])
+    fetchViews();
+
+  }, [questionViews, views, typeId])
 
   return (
     <>
@@ -62,7 +57,7 @@ const QuestionMetric = ({
       <Metric
         imgUrl="/assets/icons/eye.svg"
         alt="Eye"
-        value={formatNumberWithPostfix(views)}
+        value={formatNumberWithPostfix(views || questionViews)}
         title=" Views"
         textStyles="small-medium text-dark400_light800"
       />

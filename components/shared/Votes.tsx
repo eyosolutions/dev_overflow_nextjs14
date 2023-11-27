@@ -1,14 +1,13 @@
 "use client"
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
-// import { viewQuestion } from "@/lib/actions/interaction.action";
 import { downvoteQuestion, upvoteQuestion } from "@/lib/actions/question.action";
 import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { formatNumberWithPostfix } from "@/lib/utils";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-// import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
-// import { useToast } from "@/components/ui/use-toast";
+import { useEffect } from "react";
+import { updateQuestionViews } from "@/lib/actions/interaction.action";
 
 interface Props {
   type: string;
@@ -24,7 +23,7 @@ interface Props {
 const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDownvoted, hasSaved }: Props) => {
 
   const pathname = usePathname();
-  // const router = useRouter();
+  const router = useRouter();
   // const { toast } = useToast();
 
   const handleSave = async () => {
@@ -93,6 +92,24 @@ const Votes = ({ type, typeId, authorId, upvotes, hasUpvoted, downvotes, hasDown
       })
     }
   }
+
+  // Updating question views
+  useEffect(() => {
+    const fetchViews = async () => {
+      try {
+        await updateQuestionViews({
+          userId: authorId ? JSON.parse(authorId) : undefined,
+          questionId: JSON.parse(typeId)
+        });
+        
+      } catch (error) {
+        console.error('Error updating views: ', error);
+      }
+    }
+
+    fetchViews();
+
+  }, [authorId, typeId, pathname, router])
 
   return (
     <div className="flex gap-5">

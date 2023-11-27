@@ -67,7 +67,6 @@ const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
           questionViews={question.views}
           questionCreatedAt={question.createdAt}
           typeId={JSON.stringify(question._id)}
-          authorId={JSON.stringify(mongoUser?._id)}
         />
       </div>
 

@@ -386,3 +386,21 @@ export async function getTopQuestions() {
     throw error;
   }
 }
+
+// Get updated views
+export async function getQuestionViews(params: GetQuestionByIdParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId } = params;
+
+    const updatedQuestion = await Question.findById(questionId);
+    const views = updatedQuestion.views;
+
+    return { views }
+
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
