@@ -30,21 +30,18 @@ const QuestionMetric = ({
           questionId: JSON.parse(typeId)
         });
         setViews(result?.views);
-        console.log('API Result: ', result?.views);
+        // console.log('API Result: ', result?.views);
         
       } catch (error) {
         console.error('Error fetching updated views: ', error);
       }
     }
-    
-    console.log('Question Views: ', questionViews)
-    console.log('Views: ', views)
-    
-    if (questionViews === views) {
+
+    if (questionViews > views - 2) {
       fetchViews();
     }
     
-  })
+  }, [questionViews, views, authorId, typeId])
 
   return (
     <>
