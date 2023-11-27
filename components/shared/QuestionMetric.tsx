@@ -32,8 +32,8 @@ const QuestionMetric = ({
           userId: authorId ? JSON.parse(authorId) : undefined,
           questionId: JSON.parse(typeId)
         });
-        setViews(result);
-        console.log(result);
+        setViews(result?.views);
+        console.log(result?.views);
         
       } catch (error) {
         console.error('Error fetching updated views: ', error);
