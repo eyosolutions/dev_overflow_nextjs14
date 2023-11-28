@@ -39,16 +39,15 @@ const JobCard = ({ jobLogo, flag, title, city, state, countryCode, description, 
               alt='job-logo'
               width={64}
               height={64}
-              className="invert-colors h-full w-full bg-transparent object-contain p-2"
+              className="h-full w-full bg-transparent object-contain p-2"
             />
           </Link>
         : 
           <Image
             src={'/assets/images/site-logo.svg'}
-            alt='job-logo'
+            alt='default-site-logo'
             width={64}
             height={64}
-            className="invert-colors"
           />
         }
         <div className="background-light800_dark400 flex items-center justify-center gap-2 rounded-2xl px-2.5 py-1.5 max-sm:self-end sm:hidden">
@@ -57,7 +56,7 @@ const JobCard = ({ jobLogo, flag, title, city, state, countryCode, description, 
             alt="country-flag"
             width={16}
             height={16}
-            className="invert-colors rounded-full"
+            className="rounded-full"
           />
           <p className="body-medium text-dark400_light700">{location.trim()}</p>
         </div>
@@ -73,7 +72,7 @@ const JobCard = ({ jobLogo, flag, title, city, state, countryCode, description, 
               alt="country-flag"
               width={16}
               height={16}
-              className="invert-colors rounded-full"
+              className="rounded-full"
             />
             <p className="body-medium text-dark400_light700">{location}</p>
           </div>

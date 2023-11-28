@@ -71,7 +71,7 @@ const LocationFilter = ({ countriesFilter }: LocationFilterProps) => {
             <SelectValue aria-label={active || ""} placeholder="Select Location" />
           </div>         
         </SelectTrigger>
-        <SelectContent className="small-regular text-dark500_light700 max-h-[350px] max-w-[240px] border-none bg-light-900 dark:bg-dark-300">
+        <SelectContent className="small-regular text-dark500_light700 max-h-[320px] max-w-[240px] border-none bg-light-900 dark:bg-dark-300">
           <SelectGroup className="">
             {countriesFilter.map((item: any) => (
               <SelectItem
