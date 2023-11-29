@@ -7,6 +7,7 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import "../styles/prism.css";
 import { ThemeProvider } from '@/context/ThemeProvider';
+import { ViewsProvider } from '@/context/ViewsProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -45,7 +46,9 @@ export default function RootLayout({
           }}
         >
           <ThemeProvider>
-            {children}
+            <ViewsProvider>
+              {children}
+            </ViewsProvider> 
           </ThemeProvider>
         </ClerkProvider>
       </body>

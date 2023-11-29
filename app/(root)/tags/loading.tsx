@@ -12,7 +12,7 @@ const LoadingTags = () => {
         {[1,2,3,4,5,6,7,8,9,10].map((item) => (
           <Skeleton
             key={item}
-            className="h-[244px] rounded-2xl px-8 py-10 sm:w-[260px]"
+            className="w-full rounded-2xl px-8 py-10 sm:h-[244px] sm:w-[260px]"
           />
         ))}
       </section>

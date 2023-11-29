@@ -1,20 +1,18 @@
 "use client"
 import { formatNumberWithPostfix } from '@/lib/utils';
 import Metric from './Metric';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getQuestionViews } from '@/lib/actions/question.action';
+import { useViews } from '@/context/ViewsProvider';
 
 interface Props {
   typeViews: number;
   typeId: string;
 };
 
-const ViewsMetric = ({
-  typeId,
-  typeViews,
-}: Props) => {
-
-  const [views, setViews] = useState(typeViews);
+const ViewsMetric = ({ typeId, typeViews }: Props) => {
+  const { initialView, setInitialView, views, setViews } = useViews();
+  // const [views, setViews] = useState(typeViews);
 
   useEffect(() => {
     const fetchViews = async () => {
@@ -23,6 +21,7 @@ const ViewsMetric = ({
           questionId: JSON.parse(typeId)
         });
         setViews(result?.views);
+        setInitialView(result?.views);
         // console.log('API Result: ', result);
         
       } catch (error) {
@@ -30,16 +29,18 @@ const ViewsMetric = ({
       }
     }
 
-    fetchViews();
+    if (typeViews !== views) {
+      fetchViews();
+    }
 
-  }, [typeViews, views, typeId])
+  }, [typeViews, views, typeId, setViews, setInitialView])
 
   return (
     <>
       <Metric
         imgUrl="/assets/icons/eye.svg"
         alt="Eye"
-        value={formatNumberWithPostfix(views || typeViews)}
+        value={formatNumberWithPostfix(initialView === 0 ? typeViews : initialView)}
         title=" Views"
         textStyles="small-medium text-dark400_light800"
       />
