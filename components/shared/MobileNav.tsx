@@ -28,7 +28,7 @@ const NavContent = () => {
   .filter((item) => item?.route !== '/profile');
   
   return (
-    <section className="flex h-full flex-col gap-6 pt-16">
+    <section className="flex h-full flex-col gap-3 pt-16">
       {/* rendering the sidebarLinks when signed out */}
       <SignedOut>
         {sidebarLinkWithoutProfile.map((item) => {
@@ -106,7 +106,7 @@ const MobileNav = () => {
             <NavContent />
           </SheetClose>
           <SignedOut>
-            <div className="flex flex-col gap-3">
+            <div className="mt-4 flex flex-col gap-3">
               <SheetClose asChild>
                 <Link href="/sign-in">
                   <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
