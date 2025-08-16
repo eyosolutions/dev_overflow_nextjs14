@@ -9,9 +9,10 @@ interface Props extends SearchParamsProps {
 }
 
 const QuestionTab = async ({ userId, clerkId, searchParams }: Props) => {
-  const result = await getUserQuestions({ userId, page: searchParams.page ? +searchParams.page : 1 });
+  const resolvedSearchParams = await searchParams;
+  const result = await getUserQuestions({ userId, page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1 });
   return (
-    <>
+    <div>
       <div className="mt-5 flex flex-col gap-6">
         {result?.questions.map((question) => (
           <QuestionCard
@@ -30,11 +31,11 @@ const QuestionTab = async ({ userId, clerkId, searchParams }: Props) => {
       </div>
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
+          pageNumber={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
           isNext={result.isNext}
         />
       </div>
-    </>
+    </div>
   );
 };
 

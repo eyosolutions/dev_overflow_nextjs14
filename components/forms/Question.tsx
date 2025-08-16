@@ -208,7 +208,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
               <FormLabel className="paragraph-semibold text-dark400_light800">Tags <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-3.5">
-                <>
+                <div>
                   <Input
                     className="paragraph-regular no-focus background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                     placeholder="Add tags..."
@@ -234,8 +234,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
                       ))
                     )}
                   </div>
-                
-                </>
+                </div>
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 Add up to 3 tags to describe what your question is about. You need to press enter to add a tag.
@@ -250,13 +249,9 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <>
-              {type === 'Edit' ? 'Editing...' : 'Posting...'}
-            </>
+            type === 'Edit' ? 'Editing...' : 'Posting...'
           ) : (
-            <>
-              {type === 'Edit' ? 'Edit Question' : 'Ask a Question'}
-            </>
+            type === 'Edit' ? 'Edit Question' : 'Ask a Question'
           )}
         </Button>
       </form>

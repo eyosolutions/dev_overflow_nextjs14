@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { getUserInfo } from "@/lib/actions/user.action";
 import { URLProps } from "@/types";
-import { SignedIn, auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -20,8 +20,9 @@ export const metadata: Metadata = {
 
 const UserProfilePage = async ({ params, searchParams }: URLProps) => {
   // Adrian's version
-  const { userId: clerkId } = auth();
-  const userInfo = await getUserInfo({ userId: params.id });
+  const { userId: clerkId } = await auth();
+  const resolvedParams = await params;
+  const userInfo = await getUserInfo({ userId: resolvedParams.id });
 
   return (
     <>
@@ -64,13 +65,11 @@ const UserProfilePage = async ({ params, searchParams }: URLProps) => {
           </div>
         </div>
         <div className="mt-3 flex justify-end max-sm:mb-5 max-sm:w-full">
-          <SignedIn>
-            {clerkId === userInfo.user.clerkId && (
-              <Link href={`/profile/edit`}>
-                <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">Edit Profile</Button>
-              </Link>
-            )}
-          </SignedIn>
+          {clerkId && clerkId === userInfo.user.clerkId && (
+            <Link href={`/profile/edit`}>
+              <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">Edit Profile</Button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -88,7 +87,7 @@ const UserProfilePage = async ({ params, searchParams }: URLProps) => {
             <TabsTrigger value="answers" className="tab rounded-md">Answers</TabsTrigger>
           </TabsList>
           <TabsContent value="top-posts">
-            <QuestionTab
+          <QuestionTab
               searchParams={searchParams}
               userId={userInfo.user._id}
               clerkId={clerkId}

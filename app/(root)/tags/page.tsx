@@ -13,15 +13,16 @@ export const metadata: Metadata = {
 }
 
 const TagsPage = async ({ searchParams }: SearchParamsProps) => {
+  const resolvedSearchParams = await searchParams;
 
   const result = await getAllTags({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1
+    searchQuery: resolvedSearchParams.q,
+    filter: resolvedSearchParams.filter,
+    page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1
   });
   // console.log();
   return (
-    <>
+    <div>
       <h1 className="h1-bold text-dark100_light900">All Tags</h1>
       <div className="mt-11 flex w-full grow justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
@@ -57,11 +58,11 @@ const TagsPage = async ({ searchParams }: SearchParamsProps) => {
       </section>
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
+          pageNumber={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
           isNext={result.isNext}
         />
       </div>
-    </>
+    </div>
   );
 };
 

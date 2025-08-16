@@ -1,9 +1,9 @@
 import EditProfile from "@/components/forms/EditProfile";
 import { getUserById } from "@/lib/actions/user.action";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 const ProfileEditPage = async () => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) return;
 

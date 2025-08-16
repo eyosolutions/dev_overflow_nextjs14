@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingHome = () => {
   return (
-    <>
+    <div>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
         <div className="flex justify-end max-sm:w-full">
@@ -30,7 +30,7 @@ const LoadingHome = () => {
           <Skeleton key={item} className="h-48 w-full rounded-xl" />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

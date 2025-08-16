@@ -10,21 +10,22 @@ import { getQuestions, getRecommended } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import type { Metadata } from "next";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: 'Home | DevOverflow',
 }
 const Home = async ({ searchParams }: SearchParamsProps) => {
-  const { userId } = auth();
+  const { userId } = await auth();
+  const resolvedSearchParams = await searchParams;
   let result;
 
-  if (searchParams?.filter === 'recommended') {
+  if (resolvedSearchParams?.filter === 'recommended') {
     if (userId) {
       result = await getRecommended({
         userId,
-        searchQuery: searchParams.q,
-        page: searchParams.page ? +searchParams.page : 1
+        searchQuery: resolvedSearchParams.q,
+        page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1
       });
     } else {
       result = {
@@ -35,15 +36,15 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
 
   } else {
     result = await getQuestions({
-      searchQuery: searchParams.q,
-      filter: searchParams.filter,
-      page: searchParams.page ? +searchParams.page : 1
+      searchQuery: resolvedSearchParams.q,
+      filter: resolvedSearchParams.filter,
+      page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1
     });
   }
 
 
   return (
-    <>
+    <div>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
         <Link href="/ask-question" className="flex justify-end max-sm:w-full">
@@ -93,11 +94,11 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
       </div>
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
+          pageNumber={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
           isNext={result?.isNext}
         />
       </div>
-    </>
+    </div>
   );
 };
 

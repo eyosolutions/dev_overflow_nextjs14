@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingCollection = () => {
   return (
-    <>
+    <div>
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
       <div className="mt-11 flex w-full grow justify-between gap-5 max-sm:flex-col sm:items-center">
         <Skeleton className="min-h-[3.5rem] w-full flex-1 grow" />
@@ -17,7 +17,7 @@ const LoadingCollection = () => {
           />
         ))}
       </section>
-    </>
+    </div>
   );
 };
 

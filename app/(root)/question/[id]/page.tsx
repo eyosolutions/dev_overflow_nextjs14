@@ -5,7 +5,7 @@ import RenderTag from "@/components/shared/RenderTag";
 import Image from "next/image";
 import ParseHTML from "@/components/shared/ParseHTML";
 import AnswerForm from "@/components/forms/Answer";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "@/lib/actions/user.action";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
@@ -14,10 +14,11 @@ import { formatNumberWithPostfix, getTimestamp } from "@/lib/utils";
 import ViewsMetric from "@/components/shared/ViewsMetric";
 
 const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
-
-  const { userId: clerkId } = auth();
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  const { userId: clerkId } = await auth();
  
-  const { question } = await getQuestionById({ questionId: params.id });
+  const { question } = await getQuestionById({ questionId: resolvedParams.id });
   
   let mongoUser: any;
 
@@ -106,8 +107,8 @@ const DetailQuestionPage = async ({ params, searchParams }: URLProps) => {
         questionId={question._id}
         authorId={mongoUser?._id}
         totalAnswers={question.answers.length}
-        filter={searchParams.filter}
-        page={searchParams.page ? +searchParams.page : 1}
+        filter={resolvedSearchParams.filter}
+        page={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
       />
       {/* Client component causes rendering of page */}
       <AnswerForm

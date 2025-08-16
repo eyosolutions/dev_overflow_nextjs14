@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
@@ -15,18 +15,19 @@ export const metadata: Metadata = {
 }
 
 const SavedQuestionsPage = async ({ searchParams }: SearchParamsProps) => {
-  const { userId } = auth();
+  const { userId } = await auth();
+  const resolvedSearchParams = await searchParams;
   if (!userId) {
     return;
   }
   const result = await GetSavedQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
+    searchQuery: resolvedSearchParams.q,
+    filter: resolvedSearchParams.filter,
+    page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1,
     clerkId: userId });
 
   return (
-    <>
+    <div>
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
       <div className="mt-11 flex w-full grow justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
@@ -69,11 +70,11 @@ const SavedQuestionsPage = async ({ searchParams }: SearchParamsProps) => {
       {/* Pagination */}
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
+          pageNumber={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
           isNext={result?.isNext}
         />
       </div>
-    </>
+    </div>
   );
 };
 

@@ -14,17 +14,18 @@ export const metadata: Metadata = {
 }
 
 const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
+  const resolvedSearchParams = await searchParams;
   
   const result = await getAllUsers({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1 
+    searchQuery: resolvedSearchParams.q,
+    filter: resolvedSearchParams.filter,
+    page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1 
   });
 
   if (!result.users) return;
 
   return (
-    <>
+    <div>
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
       <div className="mt-11 flex w-full grow justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
@@ -63,11 +64,11 @@ const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
       {/* Pagination */}
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
+          pageNumber={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
           isNext={result?.isNext}
         />
       </div>
-    </>
+    </div>
   );
 };
 

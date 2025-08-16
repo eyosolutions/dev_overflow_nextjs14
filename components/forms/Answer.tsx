@@ -128,7 +128,7 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerParams) => {
           onClick={generateAIAnswer}
         >
           {isSubmittingAI ? (
-            <>Generating...</>
+            "Generating..."
           ) : (
             <>
               <Image

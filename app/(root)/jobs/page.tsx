@@ -11,22 +11,23 @@ export const metadata: Metadata = {
 }
 
 const JobsPage = async ({ searchParams }: SearchParamsProps) => {
+  const resolvedSearchParams = await searchParams;
   // const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/rest-countries`);
   const response = await getCountries();
   const { countries } = await response.json();
-  const sortedCountries = countries.slice().sort((a: any, b: any) => a.name.localeCompare(b.name));
+  const sortedCountries = countries?.slice()?.sort((a: any, b: any) => a.name.localeCompare(b.name)) || [];
 
   const userIP = await getUserCountry();
   const { userCountry } = await userIP.json();
 
   const result = await getAllJobsOrByFilter({
-    searchQuery: searchParams.q || "",
-    location: searchParams.location || userCountry.country,
-    page: searchParams.page ? +searchParams.page : 1
+    searchQuery: resolvedSearchParams.q || "",
+    location: resolvedSearchParams.location || userCountry.country,
+    page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1
   });
 
   const { searchedJobs, isNext } = await result.json();
-  const countryName = searchParams.location || userCountry.country;
+  const countryName = resolvedSearchParams.location || userCountry.country;
   const searchedCountry = sortedCountries.find((country: any) => country.name === countryName);
 
   // const sortedCountries = countries
@@ -37,7 +38,7 @@ const JobsPage = async ({ searchParams }: SearchParamsProps) => {
   // console.log(sortedCountries);
 
   return (
-    <>
+    <div>
       <h1 className="h1-bold text-dark100_light900">Jobs</h1>
       <div className="mt-11 flex w-full grow justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
@@ -58,7 +59,7 @@ const JobsPage = async ({ searchParams }: SearchParamsProps) => {
               <JobCard
                 key={item.job_id}
                 jobLogo={item.employer_logo}
-                flag={searchedCountry.flag}
+                flag={searchedCountry?.flag}
                 title={item.job_title}
                 city={item.job_city}
                 state={item.job_state}
@@ -85,11 +86,11 @@ const JobsPage = async ({ searchParams }: SearchParamsProps) => {
       {/* Pagination */}
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
+          pageNumber={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
           isNext={isNext}
         />
       </div>
-    </>
+    </div>
   );
 };
 

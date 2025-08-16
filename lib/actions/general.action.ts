@@ -106,7 +106,6 @@ export const getCountries = async () => {
 // Get all jobs by query or location
 export const getAllJobsOrByFilter = async (params: JobsProps) => {
   // Define parameters for fetch/axios
-  // const url = 'https://jsearch.p.rapidapi.com/search?query=Python%20developer%20in%20Texas%2C%20USA&page=1&num_pages=1';
   const url = 'https://jsearch.p.rapidapi.com/search';
   const options = {
     method: 'GET',
@@ -115,38 +114,68 @@ export const getAllJobsOrByFilter = async (params: JobsProps) => {
       'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
     }
   };
-  // const url = 'https://jsearch.p.rapidapi.com/search-filters?query=in%20Texas%2C%20USA';
+  
   try {
-    const { page = 1, numOfPages = 1, searchQuery, location } = params;
+    const { page = 1, numOfPages = 1, searchQuery = '', location = 'United States' } = params;
     const pageSize = 10;
-    const pageNumber = (page > 0 && !Number.isNaN(page)) ? page : 1000;
+    const pageNumber = (page > 0 && !Number.isNaN(page)) ? page : 1;
 
-    const urlQuery = `${url}?query=${searchQuery+' in '+location}&page=${pageNumber}&num_pages=${numOfPages}`
-    const countUrlQuery = `https://jsearch.p.rapidapi.com/search-filters?query=${searchQuery+' in '+location}`
+    // Encode the query properly
+    const encodedQuery = encodeURIComponent(`${searchQuery} in ${location}`);
+    const urlQuery = `${url}?query=${encodedQuery}&page=${pageNumber}&num_pages=${numOfPages}`;
     
     // Get searched Jobs
     const response = await fetch(urlQuery, options);
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    
     const searchedJobs = await response.json();
+    
+    // Check if API returned valid data
+    if (!searchedJobs || searchedJobs.status !== 'OK') {
+      console.warn('Jobs API returned no data or error status:', searchedJobs);
+      return NextResponse.json({ 
+        searchedJobs: { status: 'ERROR', data: [] }, 
+        isNext: false 
+      }, { status: 200 });
+    }
 
-    // Get total number of Jobs from Job Titles
-    const countResponse = await fetch(countUrlQuery, options);
-    const countJobs = await countResponse.json();
+    // Try to get total count, but don't fail if this doesn't work
+    let totalJobs = 0;
+    let isNext = false;
+    
+    try {
+      const countUrlQuery = `https://jsearch.p.rapidapi.com/search-filters?query=${encodedQuery}`;
+      const countResponse = await fetch(countUrlQuery, options);
+      
+      if (countResponse.ok) {
+        const countJobs = await countResponse.json();
+        
+        if (countJobs?.data?.job_titles && Array.isArray(countJobs.data.job_titles)) {
+          totalJobs = countJobs.data.job_titles
+            .map((item: any) => item.est_count || 0)
+            .reduce((acc: number, cur: number) => (acc + cur), 0);
+          
+          isNext = totalJobs > (page * pageSize);
+        }
+      }
+    } catch (countError) {
+      console.warn('Failed to get job count, using fallback:', countError);
+      // Fallback: assume there might be more if we got results
+      isNext = searchedJobs?.data && Array.isArray(searchedJobs.data) && searchedJobs.data.length >= pageSize;
+    }
 
-    // Calculate total number of jobs from query
-    const totalJobs = countJobs.data.job_titles
-      .map((item: any) => item.est_count)
-      .reduce((acc: number, cur: number) => (acc + cur), 0)
-
-    const isNext = totalJobs > (page * pageSize) + pageSize;
-
-    // console.log(totalJobs);
-
-    return NextResponse.json({ searchedJobs, isNext }, { status: 200 })
-    // return urlQuery
+    return NextResponse.json({ searchedJobs, isNext }, { status: 200 });
 
   } catch (error: any) {
-    console.error(error);
-    return NextResponse.json({ error: error.message});
+    console.error('Jobs API error:', error);
+    return NextResponse.json({ 
+      error: error.message,
+      searchedJobs: { status: 'ERROR', data: [] }, 
+      isNext: false 
+    }, { status: 200 });
   }
 };
 

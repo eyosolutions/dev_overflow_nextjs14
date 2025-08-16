@@ -39,15 +39,13 @@ const ViewsMetric = ({ typeId, typeViews }: Props) => {
   }, [typeViews, views, typeId, setViews, setInitialView, router, pathname])
 
   return (
-    <>
-      <Metric
-        imgUrl="/assets/icons/eye.svg"
-        alt="Eye"
-        value={formatNumberWithPostfix(initialView === 0 ? typeViews : initialView)}
-        title=" Views"
-        textStyles="small-medium text-dark400_light800"
-      />
-    </>
+    <Metric
+      imgUrl="/assets/icons/eye.svg"
+      alt="Eye"
+      value={formatNumberWithPostfix(initialView === 0 ? typeViews : initialView)}
+      title=" Views"
+      textStyles="small-medium text-dark400_light800"
+    />
   );
 };
 

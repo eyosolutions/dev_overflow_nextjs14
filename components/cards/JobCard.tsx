@@ -51,13 +51,15 @@ const JobCard = ({ jobLogo, flag, title, city, state, countryCode, description, 
           />
         }
         <div className="background-light800_dark400 flex items-center justify-center gap-2 rounded-2xl px-2.5 py-1.5 max-sm:self-end sm:hidden">
-          <Image
-            src={flag}
-            alt="country-flag"
-            width={16}
-            height={16}
-            className="rounded-full"
-          />
+          {flag && (
+            <Image
+              src={flag}
+              alt="country-flag"
+              width={16}
+              height={16}
+              className="rounded-full"
+            />
+          )}
           <p className="body-medium text-dark400_light700">{location.trim()}</p>
         </div>
       </div>
@@ -67,13 +69,15 @@ const JobCard = ({ jobLogo, flag, title, city, state, countryCode, description, 
         <div className="flex flex-wrap items-center justify-between gap-2.5 max-sm:flex-col max-sm:items-start max-sm:gap-3">
           <p className="base-semibold text-dark200_light900">{title}</p>
           <div className="background-light800_dark400 flex items-center justify-center gap-2 self-end rounded-2xl px-2.5 py-1.5 max-sm:hidden">
-            <Image
-              src={flag}
-              alt="country-flag"
-              width={16}
-              height={16}
-              className="rounded-full"
-            />
+            {flag && (
+              <Image
+                src={flag}
+                alt="country-flag"
+                width={16}
+                height={16}
+                className="rounded-full"
+              />
+            )}
             <p className="body-medium text-dark400_light700">{location}</p>
           </div>
         </div>
@@ -107,7 +111,7 @@ const JobCard = ({ jobLogo, flag, title, city, state, countryCode, description, 
                 width={20}
                 height={20}
               />
-              <p className="body-medium text-light-500">{formatDateString(datePosted.toString())}</p>
+              <p className="body-medium text-light-500">{datePosted ? formatDateString(datePosted.toString()) : 'Date not available'}</p>
             </div>
           </div>
           <Link href={applyLink || "/jobs"} target="_blank" rel="noopener noreferrer" className="flex items-center justify-end gap-2">

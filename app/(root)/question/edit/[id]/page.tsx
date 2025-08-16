@@ -2,17 +2,18 @@ import Question from "@/components/forms/Question";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { ParamsProps } from "@/types";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 // import { redirect } from "next/navigation";
 
 const EditQuestionPage = async ({ params }: ParamsProps) => {
-  const { userId } = auth();
+  const { userId } = await auth();
+  const resolvedParams = await params;
   // console.log('auth-Id: ', userId);
   if (!userId) return null;
 
   const mongoUser = await getUserById({ userId });
   
-  const { question } = await getQuestionById({ questionId: params.id });
+  const { question } = await getQuestionById({ questionId: resolvedParams.id });
 
   return (
     <div>

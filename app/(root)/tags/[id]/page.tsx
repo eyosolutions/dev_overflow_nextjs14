@@ -6,11 +6,13 @@ import { getQuestionsByTagId } from "@/lib/actions/tag.action";
 import { URLProps } from "@/types";
 
 const TagDetailPage = async ({ params, searchParams }: URLProps) => {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
 
   const result = await getQuestionsByTagId({
-    tagId: params.id,
-    searchQuery: searchParams.q,
-    page: searchParams.page ? +searchParams.page : 1
+    tagId: resolvedParams.id,
+    searchQuery: resolvedSearchParams.q,
+    page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1
   });
 
   // console.log('Tag: ', result.questions.length);
@@ -19,7 +21,7 @@ const TagDetailPage = async ({ params, searchParams }: URLProps) => {
       <h1 className="h1-bold text-dark100_light900">{result.tagResult.name}</h1>
       <div className="mt-11 flex w-full grow">
         <LocalSearchBar
-          route={`/tags/${params.id}`}
+          route={`/tags/${resolvedParams.id}`}
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search tag questions..."
@@ -52,7 +54,7 @@ const TagDetailPage = async ({ params, searchParams }: URLProps) => {
       </div>
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams.page ? +searchParams.page : 1}
+          pageNumber={resolvedSearchParams.page ? +resolvedSearchParams.page : 1}
           isNext={result.isNext}
         />
       </div>

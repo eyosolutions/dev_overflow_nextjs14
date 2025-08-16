@@ -2,8 +2,8 @@
 const nextConfig = {
   experimental: {
     mdxRs: true,
-    serverComponentsExternalPackages: ['mongoose'],
   },
+  serverExternalPackages: ['mongoose'],
   images: {
     remotePatterns: [
       {
